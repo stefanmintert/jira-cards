@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:svg="http://www.w3.org/2000/svg">
+  <xsl:import href="xhtml-to-xslfo.xsl"/>
+
   <xsl:output method="xml" indent="yes"/>
   <xsl:attribute-set name="border">
     <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
@@ -41,6 +43,12 @@
                               xsl:use-attribute-sets="border">
             <fo:block text-align="center" vertical-align="middle" height="20pt" line-height="20pt" font-weight="bold">
               <xsl:value-of select="summary"/>
+            </fo:block>
+          </fo:block-container>
+          <fo:block-container position="absolute" top="24pt" left="10pt" height="160pt" right="10pt"
+                              xsl:use-attribute-sets="border">
+            <fo:block>
+              <xsl:apply-templates select="description"/>
             </fo:block>
           </fo:block-container>
 
