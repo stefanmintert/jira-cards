@@ -46,4 +46,9 @@
     <link linkId="documentation_link">http://confluence.atlassian.com</link>
   </web-item>
 
+  <web-item key="print_card_action" section="operations-operations" weight="1">
+    <label>Print Card</label>
+    <link linkId="print_card_link">https://github.com/bzhoek/jira-cards</link>
+  </web-item>
+
 </atlassian-plugin>
