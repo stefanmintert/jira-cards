@@ -10,12 +10,12 @@
   <version>1.0-SNAPSHOT</version>
 
   <organization>
-    <name>Example Company</name>
-    <url>http://www.example.com/</url>
+    <name>hoek.com bv</name>
+    <url>http://www.hoek.com/</url>
   </organization>
 
   <name>jira-cards</name>
-  <description>This is the com.hoek:jira-cards plugin for Atlassian JIRA.</description>
+  <description>This plugin adds links.</description>
   <packaging>atlassian-plugin</packaging>
 
   <dependencies>
