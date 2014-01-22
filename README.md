@@ -1,8 +1,8 @@
 ## Atlassian Toolchain
 Install the [Atlassian SDK](https://developer.atlassian.com/display/DOCS/Set+up+the+Atlassian+Plugin+SDK+and+Build+a+Project) with Homebrew.
 
-  $ brew tap atlassian/tap
-  $ brew install atlassian/tap/atlassian-plugin-sdk
+    $ brew tap atlassian/tap
+    $ brew install atlassian/tap/atlassian-plugin-sdk
 
 The SDK is based on Maven, with a repository in `/usr/local/Cellar/atlassian-plugin-sdk/4.2.12/libexec/repository`.
 
