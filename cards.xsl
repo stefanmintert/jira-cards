@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:svg="http://www.w3.org/2000/svg">
+                xmlns:fo="http://www.w3.org/1999/XSL/Format">
   <xsl:import href="xhtml-to-xslfo.xsl"/>
 
   <xsl:output method="xml" indent="yes"/>
+  <xsl:attribute-set name="points">
+    <xsl:attribute name="font-size">24pt</xsl:attribute>
+  </xsl:attribute-set>
   <xsl:attribute-set name="border">
     <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
   </xsl:attribute-set>
@@ -32,20 +35,24 @@
               <xsl:value-of select="key"/>
             </fo:block>
           </fo:block-container>
+          <!-- story points -->
           <fo:block-container position="absolute" width="60pt" height="20pt" right="0"
-                              xsl:use-attribute-sets="border">
+                              xsl:use-attribute-sets="points">
             <fo:block text-align="center" vertical-align="middle" height="20pt" line-height="20pt" font-weight="bold">
-              <xsl:value-of
-                      select="customfields/customfield[@id='customfield_10102']/customfieldvalues/customfieldvalue"/>
+              <xsl:variable name="points"
+                            select="customfields/customfield[@id='customfield_10102']/customfieldvalues/customfieldvalue"/>
+              <xsl:value-of select="$points"/>
             </fo:block>
           </fo:block-container>
+          <!-- summary in center -->
           <fo:block-container position="absolute" left="60pt" height="20pt" right="60pt"
                               xsl:use-attribute-sets="border">
             <fo:block text-align="center" vertical-align="middle" height="20pt" line-height="20pt" font-weight="bold">
               <xsl:value-of select="summary"/>
             </fo:block>
           </fo:block-container>
-          <fo:block-container position="absolute" top="24pt" left="10pt" height="160pt" right="10pt"
+          <!-- description -->
+          <fo:block-container position="absolute" top="30pt" left="10pt" height="160pt" right="10pt"
                               xsl:use-attribute-sets="border">
             <fo:block>
               <xsl:apply-templates select="description"/>
