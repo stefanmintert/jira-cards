@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:fo="http://www.w3.org/1999/XSL/Format">
-  <xsl:import href="xhtml-to-xslfo.xsl"/>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 
+  <xsl:import href="xhtml-to-xslfo.xsl"/>
   <xsl:output method="xml" indent="yes"/>
+
   <xsl:attribute-set name="key">
     <xsl:attribute name="font-size">18pt</xsl:attribute>
     <xsl:attribute name="font-weight">bold</xsl:attribute>
@@ -27,10 +27,11 @@
   <xsl:attribute-set name="border">
     <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
   </xsl:attribute-set>
+
   <xsl:template match="/rss/channel">
     <fo:root>
       <fo:layout-master-set>
-        <fo:simple-page-master master-name="one" page-height="10.7cm" page-width="21cm" margin-top="1.0cm"
+        <fo:simple-page-master master-name="one" page-height="14.8cm" page-width="21cm" margin-top="1.0cm"
             margin-bottom="1.0cm" margin-left="1.0cm" margin-right="1.0cm">
           <fo:region-body/>
           <fo:region-before extent="1.0cm"/>
@@ -70,7 +71,7 @@
           </fo:block-container>
 
           <!-- reporter and assignee -->
-          <fo:block-container position="absolute" top="50pt" height="20pt">
+          <fo:block-container position="absolute" left="62pt" top="50pt" height="20pt">
             <fo:block xsl:use-attribute-sets="reporter">
               Reporter:
               <xsl:value-of select="reporter"/>,
@@ -80,7 +81,7 @@
           </fo:block-container>
 
           <!-- description -->
-          <fo:block-container position="absolute" top="80pt" left="0pt" height="142pt" right="0pt" xsl:use-attribute-sets="border">
+          <fo:block-container position="absolute" top="80pt" left="0pt" height="259pt" right="0pt" xsl:use-attribute-sets="border">
             <fo:block margin="4pt">
               <xsl:apply-templates select="description"/>
             </fo:block>
