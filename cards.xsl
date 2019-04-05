@@ -117,6 +117,9 @@
           </fo:block-container>
 
           <!-- description -->
+          <xslt:apply-templates select="description"/>
+          
+          <!--
           <fo:block-container  position="absolute" top="80pt"
             left="0pt" height="259pt" right="0pt"
             xsl:use-attribute-sets="description">
@@ -127,19 +130,41 @@
 
 
               <xslt:value-of select="replace($descriptionRaw,
-                '&lt;(/)?(p|ul|li)[^&gt;]*&gt;', '&lt;$1fo:block&gt;', '')"
+                '&lt;(/)?(p|ul|li|a)[^&gt;]*&gt;', '&lt;$1fo:block&gt;', '')"
                 disable-output-escaping="yes"/>
 
-              <!--
-              <xsl:apply-templates select="description"/>
-              -->
             </fo:block>
           </fo:block-container>
+          -->
 
         </fo:block-container>
       </fo:flow>
     </fo:page-sequence>
   </xsl:template>
+
+
+
+  <xslt:template match="description" >
+      <xslt:variable 
+                name="descriptionRaw"
+                select="./text()"/>
+          <fo:block-container  position="absolute" top="80pt"
+            left="0pt" height="259pt" right="0pt"
+            xsl:use-attribute-sets="description">
+            <xslt:apply-templates select=".." mode="border-choose"/>
+            <fo:block margin="4pt">
+
+              <xslt:value-of select="replace($descriptionRaw,
+                '&lt;(/)?(p|ul|li|a)[^&gt;]*&gt;', '&lt;$1fo:block&gt;', '')"
+                disable-output-escaping="yes"/>
+
+              <!--
+              <xsl:apply-templates select="description"/>
+               margin=&quot;4pt&quot;
+              -->
+            </fo:block>
+          </fo:block-container>
+  </xslt:template>
 
 
   <xslt:template match="item" mode="border-choose">
