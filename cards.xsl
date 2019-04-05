@@ -118,25 +118,6 @@
 
           <!-- description -->
           <xslt:apply-templates select="description"/>
-          
-          <!--
-          <fo:block-container  position="absolute" top="80pt"
-            left="0pt" height="259pt" right="0pt"
-            xsl:use-attribute-sets="description">
-            <xslt:apply-templates select="." mode="border-choose"/>
-            <fo:block margin="4pt">
-              <xslt:variable name="descriptionRaw"
-                select="description/text()"/>
-
-
-              <xslt:value-of select="replace($descriptionRaw,
-                '&lt;(/)?(p|ul|li|a)[^&gt;]*&gt;', '&lt;$1fo:block&gt;', '')"
-                disable-output-escaping="yes"/>
-
-            </fo:block>
-          </fo:block-container>
-          -->
-
         </fo:block-container>
       </fo:flow>
     </fo:page-sequence>
