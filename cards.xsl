@@ -9,6 +9,7 @@
   <xsl:attribute-set name="description">
     <xsl:attribute name="font-size">10pt</xsl:attribute>
     <xsl:attribute name="line-height">15pt</xsl:attribute>
+    <xsl:attribute name="overflow">hidden</xsl:attribute>
   </xsl:attribute-set>
   <xsl:attribute-set name="key">
     <xsl:attribute name="font-size">14pt</xsl:attribute>
@@ -43,6 +44,9 @@
   <xsl:template name="attribute-set-border-yellow">
     <xsl:attribute name="border">solid 2pt #FFD700</xsl:attribute>
   </xsl:template>
+  <xsl:template name="attribute-set-border-lightgray">
+    <xsl:attribute name="border">solid 2pt #aaaaaa</xsl:attribute>
+  </xsl:template>
   <xsl:template name="attribute-set-border-default">
     <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
   </xsl:template>
@@ -52,7 +56,7 @@
     <fo:root>
       <fo:layout-master-set>
         <fo:simple-page-master master-name="one" page-height="14.8cm" page-width="21cm" margin-top="1.0cm"
-            margin-bottom="1.0cm" margin-left="1.0cm" margin-right="1.0cm">
+            margin-bottom="1.0cm" margin-left="1.5cm" margin-right="0.5cm">
           <fo:region-body/>
           <fo:region-before extent="1.0cm"/>
           <fo:region-after extent="1.0cm"/>
@@ -69,6 +73,14 @@
           bottom="10pt" right="10pt" ><!-- xsl:use-attribute-sets="border"-->
           <xslt:apply-templates select="." mode="border-choose"/>
           
+        <!--
+           <fo:block-container position="absolute" right="-30pt" width="0pt" height="48pt" display-align="center"
+                                border="solid 20pt #DC143C">
+               <fo:block font-size="14pt" font-weight="bold" text-align="center" line-height="18pt"
+                         linefeed-treatment="preserve"></fo:block>
+            </fo:block-container>
+        -->
+        
           <!-- issue number -->
           <fo:block-container position="absolute" width="64pt" height="48pt" display-align="center">
             <xslt:apply-templates select="." mode="border-choose"/>
@@ -79,7 +91,7 @@
           </fo:block-container>
 
           <!-- summary in center -->
-          <fo:block-container position="absolute" left="66pt" height="48pt" right="98pt" >
+          <fo:block-container position="absolute" left="66pt" height="48pt" right="98pt" overflow="hidden" text-align="center" display-align="center">
             <xslt:apply-templates select="." mode="border-choose"/>
             <fo:block xsl:use-attribute-sets="summary">
               <xsl:value-of select="summary"/>
@@ -158,6 +170,9 @@
       </xslt:when>
       <xslt:when test="./project/@key = 'F6KON'">
         <xsl:call-template name="attribute-set-border-yellow"/>
+      </xslt:when>
+      <xslt:when test="./project/@key = 'FI'">
+        <xsl:call-template name="attribute-set-border-lightgray"/>
       </xslt:when>
       <xslt:otherwise>
         <xsl:call-template name="attribute-set-border-default"/>
