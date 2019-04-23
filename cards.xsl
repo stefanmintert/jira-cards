@@ -30,6 +30,7 @@
   </xsl:attribute-set>
   <xsl:attribute-set name="reporter">
     <xsl:attribute name="margin">4pt</xsl:attribute>
+    <xsl:attribute name="font-size">10pt</xsl:attribute>
   </xsl:attribute-set>
   <xsl:attribute-set name="border">
     <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
@@ -70,7 +71,7 @@
     <fo:page-sequence master-reference="one">
       <fo:flow flow-name="xsl-region-body">
         <fo:block-container position="absolute" top="10pt" left="10pt"
-          bottom="10pt" right="10pt" ><!-- xsl:use-attribute-sets="border"-->
+          bottom="10pt" right="10pt"   overflow="hidden"><!-- xsl:use-attribute-sets="border"-->
           <xslt:apply-templates select="." mode="border-choose"/>
           
         <!--
@@ -119,33 +120,62 @@
          
 
           <!-- reporter and assignee -->
-          <fo:block-container position="absolute" left="62pt" top="50pt" height="20pt">
+          <fo:block-container position="absolute" left="0pt" top="50pt" height="auto">
+            <!--<xsl:attribute name="border">solid 2pt #DC143C</xsl:attribute>-->
             <fo:block xsl:use-attribute-sets="reporter">
               Reporter:
               <xsl:value-of select="reporter"/>,
               Assignee:
               <xsl:value-of select="assignee"/>
             </fo:block>
+            <fo:block xsl:use-attribute-sets="reporter">
+                    <xslt:apply-templates select="issuelinks/issuelinktype"/>
+            </fo:block>
+
+
+                <xslt:apply-templates select="description"/>
+
           </fo:block-container>
 
-          <!-- description -->
-          <xslt:apply-templates select="description"/>
+
         </fo:block-container>
       </fo:flow>
     </fo:page-sequence>
   </xsl:template>
+  
+  <xslt:template match="issuelinks/issuelinktype" >
+        <xslt:for-each-group select="outwardlinks[./issuelink/issuekey/@id = //key/@id] | 
+                                     inwardlinks[./issuelink/issuekey/@id = //key/@id]" 
+                             group-by="@description"> <!-- the filter expression suppresses all links to issues, which are not contained in the processed XML -->
+                             
+                <!-- grouping is necessary, because "relates to" can be an outwardlink and an inwardlink -->
+                <xsl:value-of select="current-grouping-key()"/>
+                <xslt:text>: </xslt:text>
+                <xslt:apply-templates select="current-group()"/>
+        </xslt:for-each-group>
+  </xslt:template>
 
+  <xslt:template match="outwardlinks | inwardlinks" >
+         <xslt:apply-templates select="issuelink/issuekey"/>
+  </xslt:template>
 
+  <xslt:template match="issuelink/issuekey">
+        <xslt:value-of select="."/>
+        <xslt:text> </xslt:text>
+  </xslt:template>
 
   <xslt:template match="description" >
       <xslt:variable 
                 name="descriptionRaw"
                 select="./text()"/>
+                <!--
           <fo:block-container  position="absolute" top="80pt"
             left="0pt" height="259pt" right="0pt"
             xsl:use-attribute-sets="description">
+            <xslt:apply-templates select=".." mode="border-choose"/>-->
+            <fo:block margin="0pt" font-size="10pt" border-width="2px 0px 0px 0px">
+    <xsl:attribute name="padding">4pt</xsl:attribute>
             <xslt:apply-templates select=".." mode="border-choose"/>
-            <fo:block margin="4pt">
 
               <xslt:value-of select="replace($descriptionRaw,
                 '&lt;(/)?(p|ul|li|a)[^&gt;]*&gt;', '&lt;$1fo:block&gt;', '')"
@@ -156,7 +186,8 @@
                margin=&quot;4pt&quot;
               -->
             </fo:block>
-          </fo:block-container>
+            <!--
+          </fo:block-container>-->
   </xslt:template>
 
 
