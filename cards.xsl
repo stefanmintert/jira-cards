@@ -52,6 +52,29 @@
     <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
   </xsl:template>
 
+
+
+  <xsl:template match="/rss/channel" mode="extractDescriptions">
+        <xslt:apply-templates select="//description" mode="#current"/>
+  </xsl:template>
+
+
+  <xslt:template match="description"  mode="extractDescriptions">
+      <xslt:variable name="descriptionXmlFile">
+                <xslt:text>/tmp/description-</xslt:text>
+                <xslt:value-of select="generate-id()"></xslt:value-of>
+                <xslt:text>.xml</xslt:text>
+      </xslt:variable>
+        <xslt:result-document method="xml" href="{$descriptionXmlFile}">
+                <body>
+                        <xslt:value-of select="." disable-output-escaping="yes"/>
+                </body>
+        </xslt:result-document>
+  </xslt:template>
+
+
+
+
   
   <xsl:template match="/rss/channel">
     <fo:root>
@@ -165,14 +188,30 @@
   </xslt:template>
 
   <xslt:template match="description" >
+      <xslt:variable name="descriptionXmlFile">
+                <xslt:text>/tmp/description-</xslt:text>
+                <xslt:value-of select="generate-id()"></xslt:value-of>
+                <xslt:text>.xml</xslt:text>
+      </xslt:variable>
+
+        <fo:block margin="0pt" font-size="10pt" border-width="2px 0px 0px 0px" padding="4pt">
+            <xslt:apply-templates select=".." mode="border-choose"/>
+
+                <xslt:apply-templates select="document($descriptionXmlFile)"/>
+
+        </fo:block>
+
+
+
+  </xslt:template>
+
+
+<!--
+  <xslt:template match="description" >
       <xslt:variable 
                 name="descriptionRaw"
                 select="./text()"/>
-                <!--
-          <fo:block-container  position="absolute" top="80pt"
-            left="0pt" height="259pt" right="0pt"
-            xsl:use-attribute-sets="description">
-            <xslt:apply-templates select=".." mode="border-choose"/>-->
+
             <fo:block margin="0pt" font-size="10pt" border-width="2px 0px 0px 0px">
     <xsl:attribute name="padding">4pt</xsl:attribute>
             <xslt:apply-templates select=".." mode="border-choose"/>
@@ -181,15 +220,9 @@
                 '&lt;(/)?(p|ul|li|a)[^&gt;]*&gt;', '&lt;$1fo:block&gt;', '')"
                 disable-output-escaping="yes"/>
 
-              <!--
-              <xsl:apply-templates select="description"/>
-               margin=&quot;4pt&quot;
-              -->
             </fo:block>
-            <!--
-          </fo:block-container>-->
   </xslt:template>
-
+-->
 
   <xslt:template match="item" mode="border-choose">
     <xslt:choose>
@@ -210,5 +243,16 @@
       </xslt:otherwise>
     </xslt:choose>
   </xslt:template>
+
+
+
+
+
+        <!-- ########################## xhtml to fo overrides ################################# -->
+        
+        <xsl:template match="body">
+                <xsl:apply-templates select="*|text()"/>
+        </xsl:template>
+
 
 </xsl:stylesheet>
