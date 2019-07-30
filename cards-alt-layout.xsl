@@ -4,13 +4,6 @@
   <xsl:import href="xhtml-to-xslfo.xsl"/>
   <xsl:output method="xml"  encoding="us-ascii" indent="yes"/>
 
-<!--  <xsl:output method="text" encoding="windows-1252"/>-->
-  
-  <xsl:attribute-set name="description">
-    <xsl:attribute name="font-size">10pt</xsl:attribute>
-    <xsl:attribute name="line-height">15pt</xsl:attribute>
-    <xsl:attribute name="overflow">hidden</xsl:attribute>
-  </xsl:attribute-set>
   <xsl:attribute-set name="key">
     <xsl:attribute name="font-size">14pt</xsl:attribute>
     <xsl:attribute name="font-weight">bold</xsl:attribute>
@@ -25,10 +18,10 @@
     <xsl:attribute name="line-height">24pt</xsl:attribute>
   </xsl:attribute-set>
   <xsl:attribute-set name="summary">
-    <xsl:attribute name="font-size">16pt</xsl:attribute>
-    <xsl:attribute name="margin">4pt</xsl:attribute>
+    <xsl:attribute name="font-size">50pt</xsl:attribute>
+    <xsl:attribute name="margin">14pt</xsl:attribute>
   </xsl:attribute-set>
-  <xsl:attribute-set name="reporter">
+  <xsl:attribute-set name="links">
     <xsl:attribute name="margin">4pt</xsl:attribute>
     <xsl:attribute name="font-size">10pt</xsl:attribute>
   </xsl:attribute-set>
@@ -51,35 +44,6 @@
   <xsl:template name="attribute-set-border-default">
     <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
   </xsl:template>
-
-
-
-  <xsl:template match="/rss/channel" mode="extractDescriptions">
-    <xslt:variable
-      name="descriptionXmlFileTimestamp">./descriptions.timestamp</xslt:variable>
-    <xslt:result-document method="xml" href="{$descriptionXmlFileTimestamp}">
-      <body>
-        dummy
-      </body>
-    </xslt:result-document>   
-    <xslt:apply-templates select="//description" mode="#current"/>
-  </xsl:template>
-
-
-  <xslt:template match="description"  mode="extractDescriptions">
-    <xslt:variable name="descriptionXmlFile">
-      <xslt:text>/tmp/description-</xslt:text>
-      <xslt:value-of select="generate-id()"></xslt:value-of>
-      <xslt:text>.xml</xslt:text>
-    </xslt:variable>
-    
-    <xslt:result-document method="xml" href="{$descriptionXmlFile}">
-      <body>
-        <xslt:value-of select="." disable-output-escaping="yes"/>
-      </body>
-    </xslt:result-document>
-  </xslt:template>
-
 
 
 
@@ -117,51 +81,21 @@
           <xslt:apply-templates select="." mode="border-choose"/>
         
           <xslt:apply-templates select="key"/>
-          <xslt:apply-templates select="summary"/>
           <xslt:apply-templates select="type"/>
 
-          <!--
-          <!- - story points - ->
-          <fo:block-container position="absolute" width="48pt" height="48pt" right="0" xsl:use-attribute-sets="points border">
-            <fo:block>
-              <xsl:variable name="points" select="customfields/customfield[@id='customfield_10102']/customfieldvalues/customfieldvalue"/>
-              <xsl:value-of select="translate($points, '.0', '')"/>
-            </fo:block>
-        </fo:block-container>
-          -->
 
+          <fo:block-container position="absolute" left="0pt" top="48pt" height="auto">
 
-          <fo:block-container position="absolute" left="0pt" top="50pt" height="auto">
-            
-            <xslt:apply-templates select="reporter"/>
-            
-            <fo:block xsl:use-attribute-sets="reporter">
-              <xslt:apply-templates select="issuelinks/issuelinktype"/>
-            </fo:block>
-            
-            
-            <xslt:apply-templates select="description"/>
-            
+            <xslt:apply-templates select="summary"/>
           </fo:block-container>
 
+          <xslt:apply-templates select="issuelinks"/>
 
         </fo:block-container>
       </fo:flow>
     </fo:page-sequence>
   </xsl:template>
 
-  <xslt:template match="reporter">
-      <fo:block xsl:use-attribute-sets="reporter">
-        Reporter:
-        <xslt:apply-templates/>,
-        <xslt:apply-templates select="../assignee"/>
-      </fo:block>
-  </xslt:template>
-  
-  <xslt:template match="assignee">
-      Assignee:
-      <xslt:apply-templates/>
-  </xslt:template>
   
   <xslt:template match="type">
     <fo:block-container position="absolute" width="96pt"
@@ -175,15 +109,27 @@
   </xslt:template>
   
   <xslt:template match="summary">
-    <fo:block-container position="absolute" left="66pt" height="48pt" right="98pt" overflow="hidden" text-align="center" display-align="center">
+    <fo:block-container left="0pt" right="0pt" height="257pt"
+      overflow="hidden" text-align="center" > <!--display-align="center"-->
       <xslt:apply-templates select="parent::item" mode="border-choose"/>
-      <fo:block xsl:use-attribute-sets="summary">
+
+      <fo:block xsl:use-attribute-sets="summary" wrap-option="wrap">
         <xslt:apply-templates></xslt:apply-templates>
       </fo:block>
     </fo:block-container>
   </xslt:template>
   
-  <xslt:template match="issuelinks/issuelinktype" >
+  <xslt:template match="issuelinks" >
+    <fo:block-container position="absolute" bottom="0" height="30pt">
+            <xslt:apply-templates select="parent::item" mode="border-choose"/>
+
+      <fo:block xsl:use-attribute-sets="links">
+        <xslt:apply-templates select="issuelinktype"/>
+      </fo:block>
+    </fo:block-container>
+  </xslt:template>
+  
+  <xslt:template match="issuelinktype" >
         <xslt:for-each-group select="outwardlinks[./issuelink/issuekey/@id = //key/@id] | 
                                      inwardlinks[./issuelink/issuekey/@id = //key/@id]" 
                              group-by="@description"> <!-- the filter expression suppresses all links to issues, which are not contained in the processed XML -->
@@ -203,24 +149,6 @@
         <xslt:value-of select="."/>
         <xslt:text> </xslt:text>
   </xslt:template>
-
-  <xslt:template match="description" >
-      <xslt:variable name="descriptionXmlFile">
-                <xslt:text>/tmp/description-</xslt:text>
-                <xslt:value-of select="generate-id()"></xslt:value-of>
-                <xslt:text>.xml</xslt:text>
-      </xslt:variable>
-        <fo:block margin="0pt" font-size="10pt" border-width="2px 0px 0px 0px" padding="4pt">
-            <xslt:apply-templates select=".." mode="border-choose"/>
-
-                <xslt:apply-templates select="document($descriptionXmlFile)"/>
-
-        </fo:block>
-
-
-
-  </xslt:template>
-
 
   <xslt:template match="item" mode="border-choose">
     <xslt:choose>
