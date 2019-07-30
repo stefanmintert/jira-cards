@@ -949,6 +949,7 @@
     =============================================== -->
 
   <xsl:template match="img">
+    <!--
     <fo:block space-after="12pt">
       <fo:external-graphic src="{@src}">
         <xsl:if test="@width">
@@ -976,7 +977,8 @@
           </xsl:attribute>
         </xsl:if>
       </fo:external-graphic>
-    </fo:block>
+  </fo:block>
+    -->
   </xsl:template>
 
   <!-- ============================================
@@ -1207,6 +1209,7 @@
     =============================================== -->
 
   <xsl:template match="table">
+    <!--
     <fo:table table-layout="fixed" inline-progression-dimension="100%">
       <xsl:choose>
         <xsl:when test="@cols">
@@ -1222,7 +1225,8 @@
       <fo:table-body>
         <xsl:apply-templates select="*"/>
       </fo:table-body>
-    </fo:table>
+  </fo:table>
+    -->
   </xsl:template>
 
   <!-- ============================================

@@ -137,7 +137,10 @@
             <xslt:apply-templates select="." mode="border-choose"/>
 
             <fo:block>
+              <xsl:value-of select="type"/>
+              <!--xxxxxxxxxxxxxxxxxx
               <xsl:value-of select="status"/>
+              -->
             </fo:block>
           </fo:block-container>
          
