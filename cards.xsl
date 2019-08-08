@@ -262,25 +262,39 @@
 
 
   <xslt:template match="key|summary|type" mode="color-choose">
-    <xsl:attribute name="color">#ffffff</xsl:attribute>
+    <xsl:attribute name="color">
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="header-font-color-choose"/>
+    </xsl:attribute>
     <xsl:attribute name="border-color">
-      <xslt:apply-templates select="ancestor-or-self::item/project" mode="#current"/>
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="border-and-background-color-choose"/>
     </xsl:attribute>
     <xsl:attribute name="background-color">
-      <xslt:apply-templates select="ancestor-or-self::item/project" mode="#current"/>
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="border-and-background-color-choose"/>
     </xsl:attribute>
   </xslt:template>
 
   <xslt:template match="item|description" mode="color-choose">
-    <xsl:attribute name="color">#000000</xsl:attribute>
+    <xsl:attribute name="color">
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="body-font-color-choose"/>
+    </xsl:attribute>
     <xsl:attribute name="border-color">
-      <xslt:apply-templates select="ancestor-or-self::item/project" mode="#current"/>
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="border-and-background-color-choose"/>
     </xsl:attribute>
     <xsl:attribute name="background-color">transparent</xsl:attribute>
   </xslt:template>
 
   
-  <xslt:template match="project" mode="color-choose">
+  <xslt:template match="project" mode="border-and-background-color-choose">
     <xslt:choose>
       <!-- orange -->
       <xslt:when test="./@key = 'F6ZM'">#ff9900</xslt:when>
@@ -297,7 +311,24 @@
     </xslt:choose>
   </xslt:template>
 
+  <xslt:template match="project" mode="header-font-color-choose">
+    <xslt:choose>
+      <!-- orange BG -->
+      <xslt:when test="./@key = 'F6ZM'">#ffffff</xslt:when>
+      <!-- green BG -->
+      <xslt:when test="./@key = 'F6MOD'">#ffffff</xslt:when>
+      <!-- yellow BG -->
+      <xslt:when test="./@key = 'F6KON'">#666666</xslt:when>
+      <!-- blue BG -->
+      <xslt:when test="./@key = 'F6D'">#ffffff</xslt:when>
+      <!-- red BG -->
+      <xslt:when test="./@key = 'SP'">#ffffff</xslt:when>
+      <!-- gray BG -->
+      <xslt:otherwise>#000000</xslt:otherwise>
+    </xslt:choose>
+  </xslt:template>
 
+  <xslt:template match="project" mode="body-font-color-choose">#000000</xslt:template>
 
 
 
