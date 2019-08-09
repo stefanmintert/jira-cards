@@ -26,23 +26,29 @@
     <xsl:attribute name="font-size">10pt</xsl:attribute>
   </xsl:attribute-set>
   <xsl:attribute-set name="border">
-    <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
+    <xsl:attribute name="border">solid 2pt</xsl:attribute>
   </xsl:attribute-set>
   
-  <xsl:template name="attribute-set-border-red">
-    <xsl:attribute name="border">solid 2pt #DC143C</xsl:attribute>
+  <xsl:template name="attribute-set-color-orange">
+    <xsl:attribute name="border-color">#ff9900</xsl:attribute>
   </xsl:template>
-  <xsl:template name="attribute-set-border-green">
-    <xsl:attribute name="border">solid 2pt #008000</xsl:attribute>
+  <xsl:template name="attribute-set-color-green">
+    <xsl:attribute name="border-color">#99cc00</xsl:attribute>
   </xsl:template>
-  <xsl:template name="attribute-set-border-yellow">
-    <xsl:attribute name="border">solid 2pt #FFD700</xsl:attribute>
+  <xsl:template name="attribute-set-color-yellow">
+    <xsl:attribute name="border-color">#fff700</xsl:attribute>
   </xsl:template>
-  <xsl:template name="attribute-set-border-lightgray">
-    <xsl:attribute name="border">solid 2pt #aaaaaa</xsl:attribute>
+  <xsl:template name="attribute-set-color-lightblue">
+    <xsl:attribute name="border-color">#99ccff</xsl:attribute>
   </xsl:template>
-  <xsl:template name="attribute-set-border-default">
-    <xsl:attribute name="border">solid 2pt #409C94</xsl:attribute>
+  <xsl:template name="attribute-set-color-red">
+    <xsl:attribute name="border-color">#ff0000</xsl:attribute>
+  </xsl:template>
+  <xsl:template name="attribute-set-color-lightgray">
+    <xsl:attribute name="border-color">#aaaaaa</xsl:attribute>
+  </xsl:template>
+  <xsl:template name="attribute-set-color-default">
+    <xsl:attribute name="border-color">#409C94</xsl:attribute>
   </xsl:template>
 
 
@@ -51,8 +57,8 @@
   <xsl:template match="/rss/channel">
     <fo:root>
       <fo:layout-master-set>
-        <fo:simple-page-master master-name="one" page-height="14.8cm" page-width="21cm" margin-top="1.0cm"
-            margin-bottom="1.0cm" margin-left="1.5cm" margin-right="0.5cm">
+        <fo:simple-page-master master-name="one" page-height="14.8cm" page-width="21cm" margin-top="0.5cm"
+            margin-bottom="0.5cm" margin-left="0.5cm" margin-right="0.5cm">
           <fo:region-body/>
           <fo:region-before extent="1.0cm"/>
           <fo:region-after extent="1.0cm"/>
@@ -65,8 +71,14 @@
 
   <!-- issue number -->
   <xslt:template match="key">
-    <fo:block-container position="absolute" width="64pt" height="48pt" display-align="center">
-      <xslt:apply-templates select="parent::item" mode="border-choose"/>
+    <fo:block-container
+      position="absolute"
+      width="64pt"
+      height="48pt"
+      display-align="center"
+      xsl:use-attribute-sets="border"
+      >
+      <xslt:apply-templates select="." mode="color-choose"/>
       <fo:block xsl:use-attribute-sets="key">
         <xsl:value-of select="translate(., '-', '&#xA;')"/>
       </fo:block>
@@ -76,9 +88,16 @@
   <xsl:template match="item">
     <fo:page-sequence master-reference="one">
       <fo:flow flow-name="xsl-region-body">
-        <fo:block-container position="absolute" top="10pt" left="10pt"
-          bottom="10pt" right="10pt"   overflow="hidden"><!-- xsl:use-attribute-sets="border"-->
-          <xslt:apply-templates select="." mode="border-choose"/>
+        <fo:block-container
+          position="absolute"
+          top="10pt"
+          left="10pt"
+          bottom="10pt"
+          right="10pt"
+          overflow="hidden"
+          xsl:use-attribute-sets="border"
+          >
+          <xslt:apply-templates select="." mode="color-choose"/>
         
           <xslt:apply-templates select="key"/>
           <xslt:apply-templates select="type"/>
@@ -98,10 +117,15 @@
 
   
   <xslt:template match="type">
-    <fo:block-container position="absolute" width="96pt"
-      height="48pt" right="0" xsl:use-attribute-sets="points
-      ">
-      <xslt:apply-templates select="parent::item" mode="border-choose"/>
+    <fo:block-container
+      position="absolute"
+      width="96pt"
+      height="48pt"
+      right="0"
+      display-align="center"
+      xsl:use-attribute-sets="points border"
+      >
+      <xslt:apply-templates select="." mode="color-choose"/>
       <fo:block>
         <xslt:apply-templates></xslt:apply-templates>
       </fo:block>
@@ -109,11 +133,17 @@
   </xslt:template>
   
   <xslt:template match="summary">
-    <fo:block-container left="0pt" right="0pt" height="257pt"
-      overflow="hidden" text-align="center" > <!--display-align="center"-->
-      <xslt:apply-templates select="parent::item" mode="border-choose"/>
-
-      <fo:block xsl:use-attribute-sets="summary" wrap-option="wrap">
+    <fo:block-container
+      position="absolute"
+      left="0pt"
+      height="257pt"
+      right="0pt"
+      overflow="hidden"
+      text-align="center"
+      xsl:use-attribute-sets="border"
+      ><!-- display-align="center"-->
+      <xslt:apply-templates select="." mode="color-choose"/>
+      <fo:block xsl:use-attribute-sets="summary">
         <xslt:apply-templates></xslt:apply-templates>
       </fo:block>
     </fo:block-container>
@@ -121,7 +151,7 @@
   
   <xslt:template match="issuelinks" >
     <fo:block-container position="absolute" bottom="0" height="30pt">
-            <xslt:apply-templates select="parent::item" mode="border-choose"/>
+            <xslt:apply-templates select="parent::item" mode="border-choose"/><!-- TODO -->
 
       <fo:block xsl:use-attribute-sets="links">
         <xslt:apply-templates select="issuelinktype"/>
@@ -150,27 +180,74 @@
         <xslt:text> </xslt:text>
   </xslt:template>
 
-  <xslt:template match="item" mode="border-choose">
+  <xslt:template match="key|summary|type|item" mode="color-choose">
+    <xsl:attribute name="color">
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="header-font-color-choose"/>
+    </xsl:attribute>
+    <xsl:attribute name="border-color">
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="border-and-background-color-choose"/>
+    </xsl:attribute>
+    <xsl:attribute name="background-color">
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="border-and-background-color-choose"/>
+    </xsl:attribute>
+  </xslt:template>
+
+  <xslt:template match="description" mode="color-choose">
+    <xsl:attribute name="color">
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="body-font-color-choose"/>
+    </xsl:attribute>
+    <xsl:attribute name="border-color">
+      <xslt:apply-templates
+        select="ancestor-or-self::item/project"
+        mode="border-and-background-color-choose"/>
+    </xsl:attribute>
+    <xsl:attribute name="background-color">transparent</xsl:attribute>
+  </xslt:template>
+
+  
+  <xslt:template match="project" mode="border-and-background-color-choose">
     <xslt:choose>
-      <xslt:when test="./project/@key = 'F6ZM'">
-        <xsl:call-template name="attribute-set-border-red"/>
-      </xslt:when>
-      <xslt:when test="./project/@key = 'F6MOD'">
-        <xsl:call-template name="attribute-set-border-green"/>
-      </xslt:when>
-      <xslt:when test="./project/@key = 'F6KON'">
-        <xsl:call-template name="attribute-set-border-yellow"/>
-      </xslt:when>
-      <xslt:when test="./project/@key = 'FI'">
-        <xsl:call-template name="attribute-set-border-lightgray"/>
-      </xslt:when>
-      <xslt:otherwise>
-        <xsl:call-template name="attribute-set-border-default"/>
-      </xslt:otherwise>
+      <!-- orange -->
+      <xslt:when test="./@key = 'F6ZM'">#ff9900</xslt:when>
+      <!-- green -->
+      <xslt:when test="./@key = 'F6MOD'">#99cc00</xslt:when>
+      <!-- yellow -->
+      <xslt:when test="./@key = 'F6KON'">#fff700</xslt:when>
+      <!-- blue -->
+      <xslt:when test="./@key = 'F6D'">#99ccff</xslt:when>
+      <!-- red -->
+      <xslt:when test="./@key = 'SP'">#ff0000</xslt:when>
+      <!-- gray -->
+      <xslt:otherwise>#aaaaaa</xslt:otherwise>
     </xslt:choose>
   </xslt:template>
 
+  <xslt:template match="project" mode="header-font-color-choose">
+    <xslt:choose>
+      <!-- orange BG -->
+      <xslt:when test="./@key = 'F6ZM'">#ffffff</xslt:when>
+      <!-- green BG -->
+      <xslt:when test="./@key = 'F6MOD'">#ffffff</xslt:when>
+      <!-- yellow BG -->
+      <xslt:when test="./@key = 'F6KON'">#666666</xslt:when>
+      <!-- blue BG -->
+      <xslt:when test="./@key = 'F6D'">#ffffff</xslt:when>
+      <!-- red BG -->
+      <xslt:when test="./@key = 'SP'">#ffffff</xslt:when>
+      <!-- gray BG -->
+      <xslt:otherwise>#000000</xslt:otherwise>
+    </xslt:choose>
+  </xslt:template>
 
+  <xslt:template match="project" mode="body-font-color-choose">#000000</xslt:template>
 
 
 
