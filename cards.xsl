@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
-
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">  
   <xsl:import href="xhtml-to-xslfo.xsl"/>
-  <xsl:include href="cards-color-config.xsl"/>
+  <xsl:include href="cards-config.xsl"/>
+
+  <xslt:param name="tmp" select="'/tmp'"/>
+
   <xsl:output method="xml"  encoding="us-ascii" indent="yes"/>
   
   <xsl:attribute-set name="description">
@@ -62,7 +64,10 @@
   <!-- ============== mode extractDescriptions ================ -->
   <xsl:template match="/rss/channel" mode="extractDescriptions">
     <xslt:variable
-      name="descriptionXmlFileTimestamp">./descriptions.timestamp</xslt:variable>
+      name="descriptionXmlFileTimestamp">
+      <xslt:value-of select="$tmp"/>
+      <xslt:text>/descriptions.timestamp</xslt:text>
+    </xslt:variable>
     <xslt:result-document method="xml" href="{$descriptionXmlFileTimestamp}">
       <body>
         dummy
@@ -74,17 +79,26 @@
 
   <xslt:template match="description"  mode="extractDescriptions">
     <xslt:variable name="descriptionXmlFile">
-      <xslt:text>/tmp/description-</xslt:text>
+      <xslt:value-of select="$tmp"/>
+      <xslt:text>/description-</xslt:text>
       <xslt:value-of select="generate-id()"></xslt:value-of>
       <xslt:text>.xml</xslt:text>
     </xslt:variable>
+
     
     <xslt:result-document method="xml" href="{$descriptionXmlFile}">
       <body>
         <xslt:value-of select="." disable-output-escaping="yes"/>
       </body>
     </xslt:result-document>
-  </xslt:template>
+
+    <!--
+    <xslt:message terminate="no">
+      ################################
+      <xslt:value-of select="$descriptionXmlFile" disable-output-escaping="yes"/>
+    </xslt:message>
+    -->
+</xslt:template>
 
 
 
@@ -239,11 +253,12 @@
   </xslt:template>
 
   <xslt:template match="description" >
-      <xslt:variable name="descriptionXmlFile">
-                <xslt:text>/tmp/description-</xslt:text>
-                <xslt:value-of select="generate-id()"></xslt:value-of>
-                <xslt:text>.xml</xslt:text>
-      </xslt:variable>
+    <xslt:variable name="descriptionXmlFile">
+      <xslt:value-of select="$tmp"/>
+      <xslt:text>/description-</xslt:text>
+      <xslt:value-of select="generate-id()"></xslt:value-of>
+      <xslt:text>.xml</xslt:text>
+    </xslt:variable>
     <fo:block
       margin="0pt"
       font-size="10pt"

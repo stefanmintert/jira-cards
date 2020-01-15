@@ -14,6 +14,8 @@
       <xslt:when test="./@key = 'F6D'">#99ccff</xslt:when>
       <!-- red -->
       <xslt:when test="./@key = 'SP'">#ff0000</xslt:when>
+      <!-- violet -->
+      <xslt:when test="./@key = 'F6G'">#7f00ff</xslt:when>
       <!-- gray -->
       <xslt:otherwise>#aaaaaa</xslt:otherwise>
     </xslt:choose>
@@ -32,6 +34,8 @@
       <xslt:when test="./@key = 'F6D'">#ffffff</xslt:when>
       <!-- red BG -->
       <xslt:when test="./@key = 'SP'">#ffffff</xslt:when>
+      <!-- violet BG -->
+      <xslt:when test="./@key = 'F6G'">#ffffff</xslt:when>
       <!-- gray BG -->
       <xslt:otherwise>#000000</xslt:otherwise>
     </xslt:choose>

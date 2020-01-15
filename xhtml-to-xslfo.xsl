@@ -410,7 +410,7 @@
       <xsl:when test="@name">
         <xsl:if test="not(name(following-sibling::*[1]) = 'h1')">
           <fo:block line-height="0pt" space-after="0pt" 
-            font-size="0pt" id="{@name}"/>
+            font-size="0pt" id="{@name}-{generate-id()}"/>
         </xsl:if>
       </xsl:when>
       <xsl:when test="@href">

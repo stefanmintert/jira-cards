@@ -2,7 +2,7 @@
 <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 
   <xsl:import href="xhtml-to-xslfo.xsl"/>
-  <xsl:include href="cards-color-config.xsl"/>
+  <xsl:include href="cards-config.xsl"/>
   <xsl:output method="xml"  encoding="us-ascii" indent="yes"/>
 
   <xsl:attribute-set name="key">
