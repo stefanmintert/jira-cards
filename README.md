@@ -12,6 +12,10 @@ If you're looking for an Jira integration, take a look at the original github re
 
 I forked this repo from a repo called _jira-cards_ and wanted to name it differently. The main focus of my own work is, to get printed jira cards for multiple jira projects at the same time; each project with a specific color. Hence the name _multiproject-jira-cards_.
 
+# How does it look
+
+The [samples](./samples/) directory provides two PDF files, one for each output style.
+
 # What do you need
 
 * An XSLT 2 processor like Saxon (tested with Saxon 9.1.0.8J)
