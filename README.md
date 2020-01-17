@@ -4,9 +4,13 @@ This git repo provides some XSLT code that let you produce PDF cards of your Jir
 
 # What it isn't
 
-I do not provide any code, plug-ins or else to enable your Jira instance to produce the PDF. That means, you manually have to export the desired issues from Jira in XML format.
+I do not provide any code, plug-ins or else to enable your Jira instance to produce the PDF. Instead, you have to export the desired issues from Jira in XML format manually.
 
-If you're looking for an Jira integration, take a look at the original github repo from which I forked my branch.
+If you're looking for an Jira integration, take a look at the original github repo from which I forked my repo.
+
+# What is the meaning of the name
+
+I forked this repo from a repo called _jira-cards_ and wanted to name it differently. The main focus of my own work is, to get printed jira cards for multiple jira projects at the same time; each project with a specific color. Hence the name _multiproject-jira-cards_.
 
 # What do you need
 
