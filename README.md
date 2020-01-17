@@ -15,15 +15,15 @@ If you're looking for an Jira integration, take a look at the original github re
 
 Optional:
 
-* gnu make, if you want to use my sample Makefile (tested with GNU Make 4.1)
+* gnu make, if you want to use my default Makefile (tested with GNU Make 4.1)
 
 And, of course, you'll need Jira.
 
 # How to use it
 
 1. Clone the repo
-1. Copy `cards-config-sample.xsl` to `cards-config.xsl` - or write your own (see below)
-1. Export a bunch of Jira issues in XML format, save it under `jira-export.xml` in the repo directory - or copy `jira-export-sample.xml` to `jira-export.xml` 
+1. Copy `sample/cards-config-sample.xsl` to `./cards-config.xsl` - or write your own (see below)
+1. Export a bunch of Jira issues in XML format, save it under `./jira-export.xml` in the directory where the Makefile resides - or copy `sample/jira-export-sample.xml` to `./jira-export.xml` 
 1. call `make`
 
 
@@ -42,7 +42,7 @@ The Makefile assumes the software is running on a unix like system with a tempor
 
 ## XSLT-Configuration
 
-You'll need a file named `cards-config.xsl`, I'll provide a file named `cards-config-sample.xsl` for illustration purposes.
+You'll need a file named `cards-config.xsl`, I'll provide a file named `sample/cards-config-sample.xsl` for illustration purposes.
 
 It contains a mapping of Jira project keys to colors used to render the PDFs. The essential lines look like this:
 
@@ -70,7 +70,8 @@ I'm working in a multi team environment with several teams working on one produc
 1. The project contains a file named xhtml-to-xslfo.xsl by Doug Tidwell. I got the file from the original github repo when I forked it. The XHTML to FO transformation is required to render the rich text fields of a Jira issue, such as the description. When using the software I encountered some problems, i.e. rendering of tables and images didn't work well in all cases. Therefore I disabled some templates in xhtml-to-xslfo.xsl, to ensure the rendering just moves on, accepting that some content is missing in the generated PDFs. Right now non of those issues matters to me, and I didn't analyze the problem. So please don't expect a quick fix.
 1. For every XHTML snippet my software writes a temporary file and processes it with xhtml-to-xslfo.xsl. I don't like to write a couple of temporary files, but the only solution I know requires a non-free version of the Saxon XSLT processor. Michael Kay, the developer of Saxon, does an incredibly job and should be supported; without him the XSLT community would merely exist. If you use the software in a professional context, consider buying a paid-for version of Saxon.
 1. "My linked issues are not rendered - Why?" Links to issues are only rendered if the linked issue is part of the XML that is currently processed. When writing a JQL query for selecting issues, make sure you get all linked issues as well. "But why?" In my project(s) we have tons of links to other issues. But every time we print cards, we print only a small subset for a particular meeting. We have no benefit if we see on a printed card that there are a dozen linked, but for the purpose of the meeting unrelated issues. Therefore I drop links to issues, which are missing in my XML subset.
+1. "Why does the script produce not only .pdf files, but .fo files as well?" Great question! Actually, for most people the .fo files are useless. They are just some kind of temporary files. What everybody wants are the PDF files. Currently I keep the .fo files to be able to experiment with new layouts by simply modify the .fo files and render them using fop. If I'm happy with the result I implement the new layout in the XSLT files. If you don't like the .fo files, just call `make clean` or modify the Makefile.
 
 # Background
 
-This project is a fork, based on the work of Bas van der Hoek. Initially I had some different needs than those, satisfied by the original project. At the same time I was aware that I didn't already knew, what I actually needed. I made a fork and began to work in a trial and error process. This process has not come to an end, but slowed down in a way that makes me feel I'm close to my own version 1.0. 
+This project is a fork, based on the work of Bas van der Hoek. Initially my needs were different from those that were satisfied by the original project. At the same time I was aware that I didn't knew, what I really needed. So, I made a fork and began to work in a trial and error kind of work. This process has not come to an end, but slowed down in a way that makes me feel I'm close to my own version 1.0. 
