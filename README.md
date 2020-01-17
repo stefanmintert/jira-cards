@@ -1,6 +1,6 @@
 # What it is
 
-This git repo provides some XSLT code that let you produce PDF cards of your Jira tickets. You'll get two different styles of PDF cards, one with a title (summary) and description, and one with just the title (summary) in large letters without description.
+This git repo provides some XSLT code that let you produce PDF cards of your Jira tickets. You'll get two different styles of PDF cards, one with a title (summary) and description (`tickets-complete.pdf`), and one with just the title (summary) in large letters without description (`tickets-titleonly.pdf`).
 
 # What it isn't
 
@@ -25,6 +25,11 @@ And, of course, you'll need Jira.
 1. Copy `cards-config-sample.xsl` to `cards-config.xsl` - or write your own (see below)
 1. Export a bunch of Jira issues in XML format, save it under `jira-export.xml` in the repo directory - or copy `jira-export-sample.xml` to `jira-export.xml` 
 1. call `make`
+
+
+# Card size
+
+The card size was already set to A5 when I forked the repo and began my work. I have made no attempts to make the size customizable. In fact I don't care much about the specific size as long as it's aspect ratio is suitable for my needs. I print the cards on A5 and A6, depending on my needs, and I let the printer driver do the scaling. Usually I print the detailed cards (`tickets-complete.pdf`) on A5 for in-depth discussion (i.e. refinements, reviews) and the title-only cards (`tickets-titleonly.pdf`) on smaller A6 for meetings where an overview of tasks is sufficient (i.e. sprint plannings).
 
 
 # Settings and configuration
@@ -64,6 +69,7 @@ I'm working in a multi team environment with several teams working on one produc
 
 1. The project contains a file named xhtml-to-xslfo.xsl by Doug Tidwell. I got the file from the original github repo when I forked it. The XHTML to FO transformation is required to render the rich text fields of a Jira issue, such as the description. When using the software I encountered some problems, i.e. rendering of tables and images didn't work well in all cases. Therefore I disabled some templates in xhtml-to-xslfo.xsl, to ensure the rendering just moves on, accepting that some content is missing in the generated PDFs. Right now non of those issues matters to me, and I didn't analyze the problem. So please don't expect a quick fix.
 1. For every XHTML snippet my software writes a temporary file and processes it with xhtml-to-xslfo.xsl. I don't like to write a couple of temporary files, but the only solution I know requires a non-free version of the Saxon XSLT processor. Michael Kay, the developer of Saxon, does an incredibly job and should be supported; without him the XSLT community would merely exist. If you use the software in a professional context, consider buying a paid-for version of Saxon.
+1. "My linked issues are not rendered - Why?" Links to issues are only rendered if the linked issue is part of the XML that is currently processed. When writing a JQL query for selecting issues, make sure you get all linked issues as well. "But why?" In my project(s) we have tons of links to other issues. But every time we print cards, we print only a small subset for a particular meeting. We have no benefit if we see on a printed card that there are a dozen linked, but for the purpose of the meeting unrelated issues. Therefore I drop links to issues, which are missing in my XML subset.
 
 # Background
 
